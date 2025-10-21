@@ -105,13 +105,13 @@ async function ejemplos() {
     const magician = new PDFMagician();
 
     // Ejemplo 1: Extraer páginas específicas
-    /*
+    
     await magician.extractPages(
         '1752815959070.pdf',
         'extracto.pdf',
         [2, 5, '10-13', 20] // Páginas 2, 5, 10-13, 20
     );
-
+    /*
     // Ejemplo 2: Mezclar PDFs
     await magician.mergePDFs(
         'documento-40pag.pdf',
@@ -120,7 +120,7 @@ async function ejemplos() {
         ],
         'documento-mezclado.pdf'
     );
-    */
+    
     // Ejemplo 3: Múltiples inserciones
     await magician.mergePDFs(
         '1752815959070.pdf',
@@ -128,7 +128,7 @@ async function ejemplos() {
             { pdfPath: 'extracto.pdf', afterPage: 2 }
         ],
         'resultado.pdf'
-    );
+    );*/
 
 }
 
