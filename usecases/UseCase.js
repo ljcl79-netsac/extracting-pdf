@@ -5,8 +5,8 @@ const path = require('path');
 
 module.exports = {
 
-    async extractPages(inputPath, pages){
-
+    async extractPages(inputPath, pages)
+    {
         const existingPdfBytes = await fetch(inputPath).then(res => res.arrayBuffer());
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const newPdf = await PDFDocument.create();
@@ -31,7 +31,8 @@ module.exports = {
         return newPdfBytes;//{"filePath": filePath};
     },
 
-    async mergePages(basePdfPath, insertion, afterPage) {
+    async mergePages(basePdfPath, insertion, afterPage)
+    {
         const existingPdfBytes = await fetch(basePdfPath).then(res => res.arrayBuffer());
         const basePdf = await PDFDocument.load(existingPdfBytes);
         const extraFile = insertion?.buffer;
@@ -61,6 +62,34 @@ module.exports = {
         }
 
         const newPdfBytes = await newPdf.save();
+        return newPdfBytes;
+    },
+
+    async removePages(inputPath, pages)
+    {
+        const existingPdfBytes = await fetch(inputPath).then(res => res.arrayBuffer());
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        const newPdf = await PDFDocument.create();
+        const totalPages = pdfDoc.getPageCount();
+        let currentPage = 0;
+
+        // Convertir páginas a índices (0-based)
+        const pageIndices = await Commons.parsePageNumbers(pages, pdfDoc.getPageCount());
+
+        while (currentPage < totalPages)
+        {
+            // Não é uma página selecionada?
+            if(!pageIndices.includes(currentPage))
+            {
+                const [page] = await newPdf.copyPages(pdfDoc, [currentPage]);
+                newPdf.addPage(page);
+            }
+
+            currentPage++;
+        }
+
+        const newPdfBytes = await newPdf.save();
+
         return newPdfBytes;
     },
 };
